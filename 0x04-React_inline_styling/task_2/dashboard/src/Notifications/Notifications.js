@@ -1,127 +1,108 @@
-import React from 'react';
-import closeIcon from '../assets/close-icon.png';
+import React, { Fragment }from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
+import { getLatestNotification } from '../utils/utils';
 import NotificationItem from './NotificationItem';
-import PropeTypes from 'prop-types';
+import closeIcon from '../assets/close-icon.png';
 import NotificationItemShape from './NotificationItemShape';
-import { StyleSheet, css } from 'aphrodite/no-important';
-
+import './Notifications.css'
 
 class Notifications extends React.Component {
-  constructor(props) {
-    super(props);
-    this.markAsRead = this.markAsRead.bind(this);
-  }
+	constructor(props) {
+		super(props);
+		this.markAsRead = this.markAsRead.bind(this);
+	}
 
-  markAsRead(id) {
-    console.log(`Notification ${id} has been marked as read`);
-  }
+	shouldComponentUpdate(newProps) {
+		return (
+			newProps.listNotifications.length > this.props.listNotifications.length
+		);
+	}
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.listNotifications.length > this.props.listNotifications.length;
-  }
+	markAsRead(id) { 
+		console.log(`Notification ${id} has been marked as read`)
+	}
 
-  render() {
-    return (
-      <div className={css(styles.Wrapper)}>
-        <div className='menuItem'>
-          Your notifications
-        </div>
-        {this.props.displayDrawer? 
-            <div className={css(styles.Notifications)}>
-              <button className={css(styles.NotificationsBtn)}
-              aria-label="Close"
-              onClick={(e) => {
-                console.log('Close button has been clicked');
-              }}
-              >
-                <img src={closeIcon} alt="close icon" width="15px" />
-              </button>
-              {
-                this.props.listNotifications.length != 0 ?
-                  <p>Here is the list of notifications</p>
-                : null
-              }
-              <ul>
-                {
-                  this.props.listNotifications.length == 0 ?
-                    <NotificationItem type="default" value="No new notification for now" />
-                  : null
-                }
-                {
-                  this.props.listNotifications.map((val, idx)=> {
-                    return <NotificationItem
-                    type={val.type}
-                    value={val.value}
-                    html={val.html}
-                    key={val.id}
-                    markAsRead={this.markAsRead}
-                  />
-                  })
-                }
-              </ul>
-            </div>
-          :
-            null
-        }
-        
-      </div>
-    );
-  }
+	render() {
+		const { displayDrawer, listNotifications } = this.props;
+		return (
+			<React.Fragment>
+				<div className={css(styles.menuItem)}>
+					Your notifications
+				</div>
+				{ displayDrawer &&
+					<div className={css(styles.notifications)}>
+						<button style={{background: 'transparent', float: 'right'}} aria-label='Close' onClick={() => console.log('Close button has been clicked')} >
+							<img src={closeIcon} alt="close-icon" className={css(styles.notificationsbutton)} />
+						</button>
+						<p>Here is the list of notifications</p>
+						<ul className={css(styles.notificationsul)}>
+							{
+								listNotifications.length === 0 &&
+									(<NotificationItem
+										value="No new notification for now"
+									/>)
+							}
+							{
+								listNotifications && listNotifications.map((newNote) => (
+									<NotificationItem
+										key={newNote.id}
+										html={newNote.html}
+										type={newNote.type}
+										value={newNote.value}
+										markAsRead={this.markAsRead}
+										id={newNote.id}
+									/>
+								))
+							}
+						</ul>
+					</div>
+				}
+			</React.Fragment>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  Notifications: {
-    border: '3px dotted #e1484c',
-    padding: '6px 12px',
-    position: 'relative',
-    marginTop: 12
-  },
-  NotificationsBtn: {
-    color: '#3a3a3a',
-    fontWeight: 'bold',
-    background: 'none',
-    border: 'none',
-    fontSize: '15px',
-    position: 'absolute',
-    right: '3px',
-    top: '3px',
-    cursor: 'pointer',
-    outline: 'none',
-  },
-  li: {
-    '[data-priority="default"]': {
-      color: 'blue'
-    },
-    '[data-priority="urgent"]': {
-      color: '#3a3a3a'
-    },
-    '[data-notification-type="default"]': {
-      color: 'blue'
-    },
-    '[data-notification-type="urgent"]': {
-      color: '#3a3a3a'
-    },
-    ':nth-child(3)': {
-      color: 'yellow'
-    }
-  },
-  Wrapper: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'end'
-  }
-})
+	menuItem: {
+		fontFamily: 'Arial, Helvetica, sans-serif',
+		textAlign: 'right',
+		fontWeight: 'bold',
+		padding: '5px',
+		paddingRight: '20px'
+	},
 
-Notifications.defaultProps = {
-  displayDrawer: false,
-  listNotifications: []
-};
+	notifications: {
+		fontFamily: 'Arial, Helvetica, sans-serif',
+		border: '2px dashed #e1354b',
+		paddingRight: '20px 5px',
+		margin: '5px',
+		position: 'fixed',
+		right: '1%',
+		left: '65%'
+	},
+
+	notificationsbutton: {
+		width: '20px',
+		border: 'none',
+		background: 'none',
+		cursor: 'pointer'
+	},
+
+	notificationsul: {
+		paddingTop: '15px',
+		paddingLeft: '40px'
+	}
+});
 
 Notifications.propTypes = {
-  displayDrawer: PropeTypes.bool,
-  listNotifications: PropeTypes.arrayOf(NotificationItemShape)
+	displayDrawer: PropTypes.bool,
+	listNotifications: PropTypes.arrayOf(NotificationItemShape)
+};
+
+Notifications.defaultProps = {
+	displayDrawer: false,
+	listNotifications: []
 };
 
 export default Notifications;

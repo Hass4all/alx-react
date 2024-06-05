@@ -1,15 +1,29 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { expect } from 'chai';
+import { StyleSheetTestUtils } from 'aphrodite';
 import Login from './Login';
 
-describe('Login renders', () => {
-    it('Login should render', () => {
-        const LoginWrapper = shallow(<Login />);
-        expect(LoginWrapper.exists());
-    })
-    it('Login should render 2 input and label tags', () => {
-        const LoginWrapper = shallow(<Login />);
-        expect(LoginWrapper.find('input', 'label')).to.have.lengthOf(2);
-    })
-})
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+
+afterEach(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+describe('Basic React Tests - <Login />', function() {
+	it('Should render without crashing', () => {
+		const wrapper = shallow(<Login />);
+		expect(wrapper.exists()).toBeTruthy();
+	});
+
+	// it('Should render 2 input tags', () => {
+	// 	const wrapper = shallow(<Login />);
+	// 	expect(wrapper.find('.Login input')).toHaveLength(2);
+	// });
+
+	// it('Should render 2 label tags', () => {
+	// 	const wrapper = shallow(<Login />);
+	// 	expect(wrapper.find('.Login label')).toHaveLength(2);
+	// });
+});

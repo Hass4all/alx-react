@@ -1,16 +1,25 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import Header from './Header';
+import App from '../App/App';
+import Header from './Header'
 
-describe('Header', () => {
-    it('Header renders without crashing', () => {
-        const headerWrapper = shallow(<Header />);
-        expect(headerWrapper.exists());
-    })
-    it('Header should render an h1 and an img tag', () => {
-        const headerWrapper = shallow(<Header />);
-        expect(headerWrapper.exists('img')).equal(true);
-        expect(headerWrapper.containsMatchingElement(<h1>School dashboard</h1>)).equal(true);
-    });
+describe('Test Header.js', () => {
+  it('Header without crashing', (done) => {
+    expect(shallow(<Header />).exists());
+    done();
+  });
+
+  it('div with the class App-header', (done) => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.contains(<header className='App-header' />))
+    done()
+  });
+
+  it('renders 1 img and 1 h1', (done) => {
+    const wrapper = shallow(<Header />);
+    expect(wrapper.find('img')).to.have.lengthOf(1);
+    expect(wrapper.find('h1')).to.have.lengthOf(1);
+    done();
+  });
 });

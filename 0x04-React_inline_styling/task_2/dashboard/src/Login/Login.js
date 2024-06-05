@@ -1,50 +1,43 @@
-import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
+import  React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
-export default function Login() {
-    return (
-        <div className={css(styles.AppBody)}>
-            <p>
-                Login to access the full dashboard
-            </p>
-            <form className={css(styles.AppBodyForm)}>
-                <div>
-                    <label htmlFor="email" className={css(styles.AppBodyLabel)}>
-                        Email
-                    </label>
-                    <input type="email" name="email" className={css(styles.AppBodyInput)}/>
-                </div>
-                <div>
-                    <label htmlFor="password" className={css(styles.AppBodyLabel)}>
-                        Password
-                    </label>
-                    <input type="password" name="password" className={css(styles.AppBodyInput)}/>
-                </div>
-                <button type="submit" className={css(styles.AppBodyButton)}>OK</button>
-            </form>
-        </div>
-    )
+function Login() {
+  return (
+    <React.Fragment>
+      <div className={css(styles.Login)}>
+				<p>Login to access to the full dashboard</p>
+				<div>
+					<label htmlFor="email" >Email:</label>
+					<input id="email" type="email" className={css(styles.LoginInput)} />
+					<label htmlFor="password" >Password:</label>
+					<input id="password" type="password" className={css(styles.LoginInput)} />
+					<button>OK</button>
+				</div>
+      </div>
+    </React.Fragment>
+  );
 }
 
 const styles = StyleSheet.create({
-    AppBody: {
-        padding: '36px 24px'
-    },
-    AppBodyInput: {
-        padding: '0 16px 0 8px',
-        border: '1px solid #D3D3D3',
-        borderRadius: '3px'
-    },
-    AppBodyLabel: {
-        marginRight: '5px'
-    },
-    AppBodyForm: {
-        display: 'flex',
-        gap: '1rem'
-    },
-    AppBodyButton: {
-        border: '1px solid #D3D3D3',
-        borderRadius: '3px',
-        background: 'transparent'
-    }
-})
+	Login: {
+		fontFamily: 'Arial, Helvetica, sans-serif',
+		padding: '50px',
+		marginLeft: '-15px'
+	},
+
+	Loginp: {
+		top: '3rem',
+		left: '2.5rem'
+	},
+
+	Logindiv: {
+		marginLeft: '-5px',
+		marginTop: '15px'
+	},
+
+	LoginInput: {
+		margin: '5px'
+	},
+});
+
+export default Login;

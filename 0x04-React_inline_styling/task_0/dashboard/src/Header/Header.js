@@ -1,12 +1,19 @@
-import React from 'react';
-import holbertonLogo from '../assets/holberton_logo.jpg';
-import './header.css';
+import React, { Fragment } from 'react';
+import logo from '../assets/holberton_logo.jpg';
+import './Header.css';
 
-export default function Header() {
-    return (
-        <header className="App-header">
-            <img src={holbertonLogo} alt="holberton-logo"></img>
-            <h1>School dashboard</h1>
-        </header>
-    );
+
+function Header() {
+  return(
+    <Fragment>
+      <div className="App-header">
+        <img src={logo} alt="logo" />
+        <h1>
+          School dashboard
+        </h1>
+      </div>
+    </Fragment>
+  );
 }
+
+export default Header;
